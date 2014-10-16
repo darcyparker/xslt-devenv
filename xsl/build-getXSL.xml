@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  name="getXSL"
+  basedir="."
+  xmlns:if="ant:if"
+  xmlns:unless="ant:unless"
+  >
+
+  <!-- Ant Build file to download useful XSL templates and functions -->
+  <!-- By Darcy Parker darcyparker@gmail.com, http://github.com/darcyparker -->
+
+  <target name="getXSL"
+    description="Get some useful XSL examples and libraries."
+    depends="
+    get.fxsl-xslt2,
+    get.fxsl-1.2,
+    get.XSLT2_XPATH2_Ref_4thEd_SampleCode,
+    get.xsltckbk_examples,
+    get.exslt,
+    get.FunctX,
+    get.xsltsl
+    "
+    >
+  </target>
+
+  <!-- See http://fxsl.sourceforge.net/ -->
+  <target name="get.fxsl-xslt2"
+    description="Get fxsl-xsl2 - latest from cvs repo. (fxsl-xsl2.zip on sourceforge is not up to date)"
+    >
+    <delete dir="fxsl-xslt2"/>
+    <cvs
+      command="checkout"
+      cvsRoot=":pserver:anonymous@fxsl.cvs.sourceforge.net:/cvsroot/fxsl"
+      package="fxsl-xslt2"
+      failonerror="true"
+      />
+    <!--Remove unneeded dirs-->
+    <delete includeEmptyDirs="true">
+      <fileset dir="fxsl-xslt2" includes="**/CVS/" defaultexcludes="false"/>
+      <fileset dir="fxsl-xslt2" includes="Tools/" defaultexcludes="false"/>
+      <fileset dir="fxsl-xslt2" includes="doc/" defaultexcludes="false"/> <!--Note: doc is empty-->
+    </delete>
+  </target>
+
+  <!-- See http://fxsl.sourceforge.net/ -->
+  <target name="get.fxsl-1.2"
+    description="Get fxsl-1.2"
+    >
+    <delete file="fxsl-1.2.zip"/>
+    <delete dir="fxsl-1.2_for_xsl1.0"/>
+    <get
+      src="http://sourceforge.net/projects/fxsl/files/fxsl/FXSL%201.2/fxsl-1.2.zip/download"
+      dest="fxsl-1.2.zip"/>
+    <unzip src="fxsl-1.2.zip" dest="fxsl-1.2_for_xslt1"/>
+    <delete file="fxsl-1.2.zip"/>
+  </target>
+
+  <!-- See http://www.wrox.com/WileyCDA/WroxTitle/XSLT-2-0-and-XPath-2-0-Programmer-s-Reference-4th-Edition.productCd-0470192747,descCd-DOWNLOAD.html -->
+  <target name="get.XSLT2_XPATH2_Ref_4thEd_SampleCode"
+    description="Get example src files for XSLT 2.0 and XPath 2.0 Programmer\'s Reference, 4th Edition"
+    >
+    <delete file="fxsl-1.2.zip"/>
+    <delete dir="fxsl-1.2_for_xsl1.0"/>
+    <get
+      src="http://media.wiley.com/product_ancillary/47/04701927/DOWNLOAD/97804470192740_download.zip"
+      dest="XSLT2_XPATH2_Ref_4thEd_SampleCode.zip"/>
+    <unzip src="XSLT2_XPATH2_Ref_4thEd_SampleCode.zip" dest="XSLT2_XPATH2_Ref_4thEd_SampleCode"/>
+    <delete file="XSLT2_XPATH2_Ref_4thEd_SampleCode.zip"/>
+    <!--Get ch17 corrections-->
+    <get
+      src="http://media.wiley.com/product_ancillary/47/04701927/DOWNLOAD/192740_ch17-corrections.zip"
+      dest="XSLT2_XPATH2_Ref_4thEd_SampleCode/192740_ch17-corrections.zip"/>
+    <unzip src="XSLT2_XPATH2_Ref_4thEd_SampleCode/192740_ch17-corrections.zip" dest="XSLT2_XPATH2_Ref_4thEd_SampleCode/ch17"/>
+    <delete file="XSLT2_XPATH2_Ref_4thEd_SampleCode/192740_ch17-corrections.zip"/>
+    <fixcrlf
+      srcDir="XSLT2_XPATH2_Ref_4thEd_SampleCode"
+      eol="lf"
+      includes="**/*.txt, **/*.xml, **/*.xsl, **/*.dtd, **/*.xhtml, **/*.html, **/*.htm, **/*.csv, **/*.java, **/*.ged, **/*.aspx"/>
+  </target>
+
+  <!-- See O'Reilly XSLT Cookbook, 2nd Edition http://shop.oreilly.com/product/9780596009748.do -->
+  <target name="get.xsltckbk_examples"
+    description="Get example src files for O'Reilly XSLT Cookbook, 2nd Edition files"
+    >
+    <delete file="xsltckbk_examples.zip"/>
+    <delete dir="xsltckbk_examples"/>
+    <delete dir="xsltckbk"/>
+    <get
+      src="http://examples.oreilly.com/9780596009748/xsltckbk_examples.zip"
+      dest="xsltckbk_examples.zip"/>
+    <unzip src="xsltckbk_examples.zip" dest="."/>
+    <delete file="xsltckbk_examples.zip"/>
+    <move file="xsltckbk" tofile="xsltckbk_examples"/>
+  </target>
+
+  <!-- See EXSLT http://exslt.org/ -->
+  <target name="get.exslt"
+    description="Get EXSLT"
+    >
+    <delete file="exslt.zip"/>
+    <delete dir="exslt"/>
+    <get
+      src="http://exslt.org/all-exslt.zip"
+      dest="exslt.zip"/>
+    <unzip src="exslt.zip" dest="exslt"/>
+    <delete file="exslt.zip"/>
+    <fixcrlf
+      srcDir="exslt"
+      eol="lf"
+      includes="**/*"/>
+  </target>
+
+  <!-- FunctX XSLT Function Library: See http://www.xsltfunctions.com/ -->
+  <target name="get.FunctX"
+    description="Get FunctX XSLT functions"
+    >
+    <delete dir="functx"/>
+    <mkdir dir="functx"/>
+    <get
+      src="http://www.xsltfunctions.com/xsl/functx-1.0-doc-2007-01.xsl"
+      dest="functx/functx-1.0-doc-2007-01.xsl"/>
+    <get
+      src="http://www.xsltfunctions.com/xsl/functx-1.0-nodoc-2007-01.xsl"
+      dest="functx/functx-1.0-nodoc-2007-01.xsl"/>
+  </target>
+
+  <!-- XSLT Standard Library: See http://xsltsl.sourceforge.net/ -->
+  <target name="get.xsltsl"
+    description="Get XSLT Standard Library"
+    >
+    <delete dir="xsltsl-1.2.1"/>
+    <delete file="xsltsl-1.2.1.zip"/>
+    <get
+      src="http://prdownloads.sourceforge.net/xsltsl/xsltsl-1.2.1.zip"
+      dest="xsltsl-1.2.1.zip"/>
+    <unzip src="xsltsl-1.2.1.zip" dest="."/>
+    <delete file="xsltsl-1.2.1.zip"/>
+    <!--Remove unneeded dirs-->
+    <delete includeEmptyDirs="true">
+      <fileset dir="xsltsl-1.2.1" includes="**/CVS/" defaultexcludes="false"/>
+    </delete>
+  </target>
+
+</project>

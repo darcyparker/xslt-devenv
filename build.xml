@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  name="test"
+  basedir="."
+  xmlns:if="ant:if"
+  xmlns:unless="ant:unless"
+  >
+
+  <!--Store project's root directory in ${root.dir}-->
+  <dirname property="root.dir" file="${ant.file.test}"/>
+
+  <!--Optionally: Override some of anthology's defaults-->
+  <property name="ant-hology.dir" location="${root.dir}/../ant-hology"/>
+  <property name="xmlcatalog.dir" location="${root.dir}/../XMLCatalog"/>
+  <property name="ant-hology.temp.dir" location="${root.dir}/temp"/>
+  <mkdir dir="${ant-hology.temp.dir}"/>
+
+  <!-- Import the common settings for ant-hology -->
+  <import
+    file="${ant-hology.dir}/commonProperties.xml"
+    unless:set="ant-hology.commonProperties.loaded"/>
+
+  <!--Install the minimum set of required libraries if they are not installed-->
+  <ant
+    unless:set="ant-hology.availableLibraries.allNecessaryLibs"
+    antfile="${ant-hology.getLibraryDefs.dir}/allNecessaryLibs.xml"
+    target="ant-hology.get.allNecessaryLibs"
+    />
+
+  <!--Import required items-->
+  <!-- * In this case I am importing everything. But normally I would only-->
+  <!--   import only what I need.-->
+  <import
+    file="${ant-hology.dir}/all.xml"
+    unless:set="${ant-hology.all.loaded}"/>
+
+  <property name="build.dir" value="${root.dir}/build"/>
+  <mkdir dir="${build.dir}"/>
+
+</project>

@@ -1,0 +1,21 @@
+Bugs to file with apache ant
+  - docs about if and unless are wrong with regards to if:true, if:blank, unless:true and unless:blank
+      https://ant.apache.org/manual/ifunless.html
+      if:set and unless:set considers its attribute value to be the property to check
+      if:true, unless:true, if:blank and unless:blank look at the value of its attribute and not the
+      value of a property it points to.
+   - bug about available condition not working with windows [SYMLINK].
+     - Can use a scriptcondition though... see workaround I wrote
+
+BDD Test Framework for XSLT
+  xspec
+    https://code.google.com/p/xspec/
+
+Other sax2 parsers
+  https://github.com/FasterXML/aalto-xml
+  https://github.com/andriy-gerasika/rtf2xml
+    - wait until xslt4json sax parser is fixed before trying the rtf one
+    - See https://github.com/andriy-gerasika/xslt4json/issues/1
+
+Investigate maven for dependency management
+gradle for builds? http://www.gradle.org/
